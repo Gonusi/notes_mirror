@@ -1,13 +1,16 @@
-import Mirror from "./components/Mirror";
-import { Box } from "@mui/material";
-import StickyNotesBoard from "./components/StickyNotesBoard.tsx";
+import Mirror from "./features/mirror/presentational/Mirror";
+import store from "./redux/store.ts";
+import { Provider } from "react-redux";
+import StickyNotesContainer from "./features/stickyNotes/container/StickyNotesContainer.tsx";
 
 function App() {
   return (
-    <Box sx={{ width: "100%", height: "100vh" }}>
-      <Mirror />
-      <StickyNotesBoard />
-    </Box>
+    <Provider store={store}>
+      <div style={{ width: "100%", height: "100vh" }}>
+        <Mirror />
+        <StickyNotesContainer />
+      </div>
+    </Provider>
   );
 }
 

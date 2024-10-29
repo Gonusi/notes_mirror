@@ -1,4 +1,3 @@
-import { Box } from "@mui/material";
 import { useEffect, useRef } from "react";
 
 function Mirror() {
@@ -42,8 +41,11 @@ function Mirror() {
 
       canvas.width = video.videoWidth;
       canvas.height = video.videoHeight;
-      blurBackgroundCanvas.width = video.videoWidth;
-      blurBackgroundCanvas.height = video.videoHeight;
+
+      if (blurBackgroundCanvas) {
+        blurBackgroundCanvas.width = video.videoWidth;
+        blurBackgroundCanvas.height = video.videoHeight;
+      }
 
       video.play();
 
@@ -65,11 +67,11 @@ function Mirror() {
   };
 
   return (
-    <Box sx={{ width: "100%", height: "100%", background: "grey" }}>
+    <div style={{ width: "100%", height: "100%", background: "grey" }}>
       {/*<button onClick={handleStartMirrorClick}>Start</button>*/}
-      <Box
+      <div
         ref={containerRef}
-        sx={{
+        style={{
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
@@ -99,8 +101,8 @@ function Mirror() {
           ref={canvasRef}
           id="mirrorCanvas"
         ></canvas>
-      </Box>
-    </Box>
+      </div>
+    </div>
   );
 }
 
