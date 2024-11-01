@@ -13,7 +13,7 @@ let preloadedState: RootState | undefined;
 
 // TODO move to indexDB
 try {
-  const storedState = localStorage.getItem("store");
+  const storedState = localStorage.getItem(LOCALSTORAGE_KEY);
   if (storedState) {
     preloadedState = JSON.parse(storedState) as RootState;
   }
