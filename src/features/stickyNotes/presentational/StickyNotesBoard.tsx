@@ -1,5 +1,6 @@
 import { Note } from "../../../types.ts";
 import StickyNote from "./StickyNote.tsx";
+import { NOTE_DEFAULTS } from "../constants.ts";
 
 type Props = {
   onCreateNote: (note: Note) => void;
@@ -33,6 +34,8 @@ function StickyNotesBoard({
           x: e.clientX,
           y: e.clientY,
           id: new Date().getTime(),
+          width: NOTE_DEFAULTS.width,
+          height: NOTE_DEFAULTS.height,
         });
       }}
     >

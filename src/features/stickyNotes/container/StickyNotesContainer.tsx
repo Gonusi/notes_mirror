@@ -17,7 +17,6 @@ function StickyNote() {
   };
 
   const handleUpdateNote = (noteIndex: number, note: Note) => {
-    console.log("handleUpdateNote", noteIndex, note);
     dispatch(updateNote({ noteIndex, note: note }));
   };
 
