@@ -7,3 +7,7 @@ export type Note = {
   height: number;
   isDragInProgress: boolean;
 };
+
+export type RootState = {
+  notes: Note[];
+};

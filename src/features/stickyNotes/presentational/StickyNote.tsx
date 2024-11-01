@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Note } from "../../../types";
 import { css } from "@emotion/react";
-import Draggable from "react-draggable";
+import Draggable, { DraggableEventHandler } from "react-draggable";
 
 type Props = {
   note: Note;
@@ -17,6 +17,8 @@ const StickyNote: React.FC<Props> = ({
   onDeleteNote,
 }) => {
   const [text, setText] = useState(note.text || "");
+  const [isHovered, setIsHovered] = useState(false);
+  const [isFocused, setIsFocused] = useState(false);
 
   useEffect(() => {
     setText(note.text);
@@ -24,18 +26,54 @@ const StickyNote: React.FC<Props> = ({
 
   const handleBlur = () => {
     onUpdateNote(noteIndex, { ...note, text });
+    setIsFocused(false);
+  };
+
+  const handleDragStop: DraggableEventHandler = (_, data) => {
+    onUpdateNote(noteIndex, {
+      ...note,
+      x: data.x,
+      y: data.y,
+    });
   };
 
   return (
-    <Draggable defaultPosition={{ x: note.x, y: note.y }}>
+    <Draggable
+      defaultPosition={{ x: note.x, y: note.y }}
+      onStop={handleDragStop}
+    >
       <div
+        onMouseEnter={() => {
+          setIsHovered(true);
+        }}
+        onMouseLeave={() => {
+          setIsHovered(false);
+        }}
+        onFocus={() => {
+          setIsFocused(true);
+        }}
         style={{
-          background: "red",
           paddingTop: "30px",
           position: "absolute",
           borderRadius: "4px",
         }}
       >
+        <button
+          style={{
+            borderRadius: "100%",
+            width: 30,
+            height: 30,
+            alignItems: "center",
+            justifyContent: "center",
+            display: isHovered || isFocused ? "flex" : "none",
+            position: "absolute",
+            right: -15,
+            top: 15,
+          }}
+          onClick={() => onDeleteNote(noteIndex)}
+        >
+          ✖
+        </button>
         <textarea
           css={css`
             background-color: yellow;
@@ -53,7 +91,6 @@ const StickyNote: React.FC<Props> = ({
           onChange={(e) => setText(e.target.value)}
           onBlur={handleBlur}
         />
-        <button onClick={() => onDeleteNote(noteIndex)}>Delete</button>
       </div>
     </Draggable>
   );
