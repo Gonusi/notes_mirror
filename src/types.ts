@@ -5,7 +5,6 @@ export type Note = {
   y: number;
   width: number;
   height: number;
-  isDragInProgress: boolean;
 };
 
 export type RootState = {

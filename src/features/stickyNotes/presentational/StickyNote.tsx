@@ -1,3 +1,4 @@
+/** @jsxImportSource @emotion/react */
 import React, { useState, useEffect, useRef } from "react";
 import { Note } from "../../../types";
 import { css } from "@emotion/react";
@@ -119,7 +120,7 @@ const StickyNote: React.FC<Props> = ({
           ✖
         </button>
         <textarea
-          ref={textareaRef} // Attach the ref to the textarea
+          ref={textareaRef}
           onMouseUp={handleTextAreaMouseUp}
           css={css`
             background-color: yellow;
