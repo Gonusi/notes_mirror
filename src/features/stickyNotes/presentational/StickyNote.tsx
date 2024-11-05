@@ -17,7 +17,7 @@ const StickyNote: React.FC<Props> = ({
                                          onDeleteNote,
                                      }) => {
     const [text, setText] = useState(note.text || "");
-    const [isHovered, setIsHovered] = useState(false);
+    const [, setIsHovered] = useState(false);
     const [isFocused, setIsFocused] = useState(false);
     useState(false);
 
