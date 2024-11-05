@@ -21,7 +21,9 @@ function StickyNote() {
   };
 
   const handleDeleteNote = (noteIndex: number) => {
-    dispatch(deleteNote(noteIndex));
+    if (window.confirm("Are you sure you want to delete this note?")) {
+      dispatch(deleteNote(noteIndex));
+      }
   };
 
   return (
