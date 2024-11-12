@@ -91,16 +91,17 @@ function Mirror() {
           }}
           ref={blurBackgroundCanvasRef}
           id="blurBackgroundCanvas"
-        ></canvas>
+        />
 
         <canvas
           style={{
             position: "relative",
             zIndex: 1,
+            // boxShadow: "0 0 200px rgba(0,0,0,0.5)",
           }}
           ref={canvasRef}
           id="mirrorCanvas"
-        ></canvas>
+        />
       </div>
     </div>
   );

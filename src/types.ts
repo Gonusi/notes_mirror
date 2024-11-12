@@ -9,4 +9,7 @@ export type Note = {
 
 export type RootState = {
   notes: Note[];
+  ui: {
+    isLoginDialogOpen: boolean;
+  };
 };

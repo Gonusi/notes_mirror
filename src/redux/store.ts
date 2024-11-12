@@ -1,5 +1,6 @@
-import { configureStore, Middleware } from "@reduxjs/toolkit";
+import { configureStore, combineReducers, Middleware } from "@reduxjs/toolkit";
 import notes from "./reducers/notes";
+import ui from "./reducers/ui";
 import { LOCALSTORAGE_KEY } from "../constants.ts";
 import { RootState } from "../types.ts";
 
@@ -11,7 +12,6 @@ const persistenceMiddleware: Middleware = (storeAPI) => (next) => (action) => {
 
 let preloadedState: RootState | undefined;
 
-// TODO move to indexDB
 try {
   const storedState = localStorage.getItem(LOCALSTORAGE_KEY);
   if (storedState) {
@@ -22,10 +22,13 @@ try {
   preloadedState = undefined;
 }
 
+const rootReducer = combineReducers({
+  notes,
+  ui,
+});
+
 const store = configureStore({
-  reducer: {
-    notes,
-  },
+  reducer: rootReducer,
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(persistenceMiddleware),
   preloadedState,
