@@ -81,6 +81,7 @@ const StickyNote: React.FC<Props> = ({
       defaultPosition={{ x: note.x, y: note.y }}
       onStop={handleDragStop}
       handle={`.dragHandle-${note.id}`}
+      nodeRef={noteRef}
     >
       <div
         ref={noteRef}

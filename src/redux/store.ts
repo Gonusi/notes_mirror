@@ -3,6 +3,7 @@ import notes from "./reducers/notes";
 import ui from "./reducers/ui";
 import { LOCALSTORAGE_KEY } from "../constants.ts";
 import { RootState } from "../types.ts";
+import user from "./reducers/user.ts";
 
 const persistenceMiddleware: Middleware = (storeAPI) => (next) => (action) => {
   const result = next(action);
@@ -25,6 +26,7 @@ try {
 const rootReducer = combineReducers({
   notes,
   ui,
+  user,
 });
 
 const store = configureStore({

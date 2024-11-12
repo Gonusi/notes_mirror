@@ -10,10 +10,11 @@ import Button from "@mui/material/Button";
 
 type Props = {
   handleClose: () => void;
+  handleLogin: (email: string) => void;
   isOpen: boolean;
 };
 
-function LoginDialog({ handleClose, isOpen }: Props) {
+function LoginDialog({ handleClose, handleLogin, isOpen }: Props) {
   return (
     <Dialog
       open={isOpen}
@@ -25,7 +26,7 @@ function LoginDialog({ handleClose, isOpen }: Props) {
           const formData = new FormData(event.currentTarget);
           const formJson = Object.fromEntries((formData as any).entries());
           const email = formJson.email;
-          console.log(email);
+          handleLogin(email);
           handleClose();
         },
       }}

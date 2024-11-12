@@ -34,7 +34,7 @@ function App() {
             }}
           >
             {/*<Mirror />*/}
-            {/*<StickyNotesContainer />*/}
+            <StickyNotesContainer />
           </Box>
           <LoginDialogContainer />
         </Provider>

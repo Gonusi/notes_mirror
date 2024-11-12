@@ -6,10 +6,12 @@ import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 
 type Props = {
+  email: string | null;
   handleLoginClick: () => void;
+  handleLogoutClick: () => void;
 };
 
-function Header({ handleLoginClick }: Props) {
+function Header({ handleLoginClick, handleLogoutClick, email }: Props) {
   return (
     <AppBar
       position="static"
@@ -25,12 +27,22 @@ function Header({ handleLoginClick }: Props) {
         >
           <MenuIcon />
         </IconButton>
+
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-          Notes & Mirror
+          Notes & Mirror {email && `| ${email}`}
         </Typography>
-        <Button onClick={handleLoginClick} color="inherit">
-          Login
-        </Button>
+
+        {!email && (
+          <Button onClick={handleLoginClick} color="inherit">
+            Login
+          </Button>
+        )}
+
+        {email && (
+          <Button onClick={handleLogoutClick} color="inherit">
+            Logout
+          </Button>
+        )}
       </Toolbar>
     </AppBar>
   );

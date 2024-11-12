@@ -12,4 +12,9 @@ export type RootState = {
   ui: {
     isLoginDialogOpen: boolean;
   };
+  user: {
+    email: string | null;
+    name: string | null;
+    id: string | null;
+  };
 };
