@@ -1,7 +1,10 @@
 import Header from "../presentational/Header.tsx";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../../../redux/store.ts";
-import { toggleLoginDialog } from "../../../redux/reducers/ui.ts";
+import {
+  toggleLoginDialog,
+  toggleSignupDialog,
+} from "../../../redux/reducers/ui.ts";
 import { RootState } from "../../../types.ts";
 import { clearUserDetails } from "../../../redux/reducers/user.ts";
 
@@ -13,6 +16,10 @@ function HeaderContainer() {
     dispatch(toggleLoginDialog(true));
   };
 
+  const handleSignupClick = () => {
+    dispatch(toggleSignupDialog(true));
+  };
+
   const handleLogoutClick = () => {
     dispatch(clearUserDetails());
   };
@@ -22,6 +29,7 @@ function HeaderContainer() {
       handleLoginClick={handleLoginClick}
       handleLogoutClick={handleLogoutClick}
       email={email}
+      handleSignupClick={handleSignupClick}
     />
   );
 }

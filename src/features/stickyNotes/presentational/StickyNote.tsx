@@ -2,6 +2,10 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Note } from "../../../types";
 import Draggable, { DraggableEventHandler } from "react-draggable";
+import { Box } from "@mui/material";
+import IconButton from "@mui/material/IconButton";
+import CloseIcon from "@mui/icons-material/Close";
+import Typography from "@mui/material/Typography";
 
 type Props = {
   note: Note;
@@ -83,7 +87,7 @@ const StickyNote: React.FC<Props> = ({
       handle={`.dragHandle-${note.id}`}
       nodeRef={noteRef}
     >
-      <div
+      <Box
         ref={noteRef}
         onMouseEnter={() => {
           setIsHovered(true);
@@ -94,7 +98,7 @@ const StickyNote: React.FC<Props> = ({
         onFocus={() => {
           setIsFocused(true);
         }}
-        style={{
+        sx={{
           position: "absolute",
           backgroundColor: "yellow",
           border: "none",
@@ -108,8 +112,8 @@ const StickyNote: React.FC<Props> = ({
           overflow: "hidden",
         }}
       >
-        <div
-          style={{
+        <Box
+          sx={{
             cursor: "move",
             borderTopLeftRadius: "4px",
             padding: " 4px 8px",
@@ -121,27 +125,17 @@ const StickyNote: React.FC<Props> = ({
           }}
           className={`dragHandle-${note.id}`}
         >
-          {new Date(note.id).toLocaleDateString(navigator.language)}
-          <button
+          <Typography fontSize={14} fontWeight={600}>
+            {new Date(note.id).toLocaleDateString(navigator.language)}
+          </Typography>
+          <IconButton
             tabIndex={1}
-            style={{
-              width: 26,
-              height: 26,
-              alignItems: "center",
-              justifyContent: "center",
-              background: "transparent",
-              border: "none",
-              borderRadius: "4px",
-              position: "absolute",
-              right: 0,
-              top: 0,
-              cursor: "pointer",
-            }}
             onClick={() => onDeleteNote(noteIndex)}
+            size="small"
           >
-            ✖
-          </button>
-        </div>
+            <CloseIcon htmlColor="black" fontSize="small" />
+          </IconButton>
+        </Box>
 
         <textarea
           ref={textareaRef}
@@ -159,7 +153,7 @@ const StickyNote: React.FC<Props> = ({
             backgroundColor: "#ffdd99",
           }}
         />
-      </div>
+      </Box>
     </Draggable>
   );
 };

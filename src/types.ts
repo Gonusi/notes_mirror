@@ -11,6 +11,7 @@ export type RootState = {
   notes: Note[];
   ui: {
     isLoginDialogOpen: boolean;
+    isSignupDialogOpen: boolean;
   };
   user: {
     email: string | null;

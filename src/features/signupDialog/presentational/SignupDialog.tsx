@@ -10,11 +10,11 @@ import Button from "@mui/material/Button";
 
 type Props = {
   handleClose: () => void;
-  handleLogin: (email: string, password: string) => void;
+  handleSignup: (email: string, password: string) => void;
   isOpen: boolean;
 };
 
-function LoginDialog({ handleClose, handleLogin, isOpen }: Props) {
+function SignupDialog({ handleClose, handleSignup, isOpen }: Props) {
   return (
     <Dialog
       open={isOpen}
@@ -27,16 +27,27 @@ function LoginDialog({ handleClose, handleLogin, isOpen }: Props) {
           const formJson = Object.fromEntries((formData as any).entries());
           const email = formJson.email;
           const password = formJson.password;
-          handleLogin(email, password);
+          handleSignup(email, password);
           handleClose();
         },
       }}
     >
-      <DialogTitle>Login</DialogTitle>
+      <DialogTitle>Signup</DialogTitle>
       <DialogContent>
         <DialogContentText>
-          Enter your email. You'll receive a link which will log you in
-          automatically. No password needed.
+          <p>
+            You don't need to signup to use the app. Your data will still be
+            saved, but only on your local browser. This has the benefit of the
+            data not being sent to any server, however you will not be able to
+            sync the data between devices this way. Once logged in, your notes
+            will be saved to the server and you will be able to see them on any
+            device after logging in.{" "}
+          </p>
+          <p>
+            Please understand that this is a one man operation, so don't expect
+            enterprise level security - don't put extremely sensitive
+            information into the notes, like your passwords etc.
+          </p>
         </DialogContentText>
         <TextField
           autoFocus
@@ -67,4 +78,4 @@ function LoginDialog({ handleClose, handleLogin, isOpen }: Props) {
   );
 }
 
-export default LoginDialog;
+export default SignupDialog;

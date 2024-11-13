@@ -9,9 +9,15 @@ type Props = {
   email: string | null;
   handleLoginClick: () => void;
   handleLogoutClick: () => void;
+  handleSignupClick: () => void;
 };
 
-function Header({ handleLoginClick, handleLogoutClick, email }: Props) {
+function Header({
+  handleLoginClick,
+  handleSignupClick,
+  handleLogoutClick,
+  email,
+}: Props) {
   return (
     <AppBar
       position="static"
@@ -35,6 +41,12 @@ function Header({ handleLoginClick, handleLogoutClick, email }: Props) {
         {!email && (
           <Button onClick={handleLoginClick} color="inherit">
             Login
+          </Button>
+        )}
+
+        {!email && (
+          <Button onClick={handleSignupClick} color="inherit">
+            Signup
           </Button>
         )}
 

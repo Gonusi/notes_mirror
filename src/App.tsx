@@ -7,11 +7,7 @@ import HeaderContainer from "./features/header/container/HeaderContainer.tsx";
 import { Box, createTheme, ThemeProvider } from "@mui/material";
 import { APP_BAR_HEIGHT } from "./constants.ts";
 import LoginDialogContainer from "./features/loginDialog/container/LoginDialogContainer.tsx";
-import { Client as AppwriteClient } from "appwrite";
-import { APPWRITE_PROJECT_ID } from "../config.ts";
-
-const client = new AppwriteClient();
-client.setProject(APPWRITE_PROJECT_ID);
+import SignupDialogContainer from "./features/signupDialog/container/SignupDialogContainer.tsx";
 
 const darkTheme = createTheme({
   palette: {
@@ -37,6 +33,7 @@ function App() {
             <StickyNotesContainer />
           </Box>
           <LoginDialogContainer />
+          <SignupDialogContainer />
         </Provider>
       </ThemeProvider>
     </>
