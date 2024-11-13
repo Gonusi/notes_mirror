@@ -20,17 +20,16 @@ function LoginDialogContainer() {
   const handleLogin = async (email: string, password: string) => {
     const account = new Account(client);
 
-    const promise = account.createEmailPasswordSession(email, password);
-
-    promise.then(
-      function (response) {
-        console.log(response); // Success
-      },
-      function (error) {
-        console.log(error); // Failure
-        setError(error.message);
-      },
-    );
+    try {
+      await account.createEmailPasswordSession(email, password);
+      const user = await account.get();
+      dispatch(
+        setUserDetails({ email: user.email, name: user.name, id: user.$id }),
+      );
+    } catch (error: unknown) {
+      console.log("error", error);
+      setError("Invalid email or password");
+    }
   };
 
   return (

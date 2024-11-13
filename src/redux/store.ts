@@ -36,6 +36,7 @@ try {
 } catch (error) {
   console.error("Failed to load state from localStorage:", error);
   preloadedState = undefined;
+  account.deleteSession("current");
 }
 
 const rootReducer = combineReducers({

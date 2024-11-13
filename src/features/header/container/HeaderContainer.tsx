@@ -7,6 +7,7 @@ import {
 } from "../../../redux/reducers/ui.ts";
 import { RootState } from "../../../types.ts";
 import { clearUserDetails } from "../../../redux/reducers/user.ts";
+import { account } from "../../../appwrite/appwrite.ts";
 
 function HeaderContainer() {
   const dispatch = useDispatch<AppDispatch>();
@@ -21,6 +22,7 @@ function HeaderContainer() {
   };
 
   const handleLogoutClick = () => {
+    account.deleteSession("current");
     dispatch(clearUserDetails());
   };
 
