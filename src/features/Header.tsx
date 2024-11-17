@@ -4,20 +4,12 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
+import { useUser } from "../context/user.tsx";
+import { Link } from "react-router-dom";
 
-type Props = {
-  email: string | null;
-  handleLoginClick: () => void;
-  handleLogoutClick: () => void;
-  handleSignupClick: () => void;
-};
+function Header() {
+  const { current, logout } = useUser();
 
-function Header({
-  handleLoginClick,
-  handleSignupClick,
-  handleLogoutClick,
-  email,
-}: Props) {
   return (
     <AppBar
       position="static"
@@ -35,23 +27,23 @@ function Header({
         </IconButton>
 
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-          Notes & Mirror {email && `| ${email}`}
+          Notes & Mirror {current?.email && `| ${current.email}`}
         </Typography>
 
-        {!email && (
-          <Button onClick={handleLoginClick} color="inherit">
+        {!current?.email && (
+          <Button component={Link} color="inherit" to={"/login"}>
             Login
           </Button>
         )}
 
-        {!email && (
-          <Button onClick={handleSignupClick} color="inherit">
+        {!current?.email && (
+          <Button component={Link} color="inherit" to={"/signup"}>
             Signup
           </Button>
         )}
 
-        {email && (
-          <Button onClick={handleLogoutClick} color="inherit">
+        {current?.email && (
+          <Button onClick={logout} color="inherit">
             Logout
           </Button>
         )}

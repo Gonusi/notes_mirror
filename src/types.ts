@@ -1,5 +1,5 @@
 export type Note = {
-  id: number;
+  id: number | null;
   text: string;
   x: number;
   y: number;

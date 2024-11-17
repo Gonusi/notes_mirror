@@ -1,13 +1,14 @@
 import Mirror from "./features/mirror/presentational/Mirror";
-import store from "./redux/store.ts";
-import { Provider } from "react-redux";
-import StickyNotesContainer from "./features/stickyNotes/container/StickyNotesContainer.tsx";
+import StickyNotesBoard from "./features/StickyNotesBoard";
 import CssBaseline from "@mui/material/CssBaseline";
-import HeaderContainer from "./features/header/container/HeaderContainer.tsx";
+import Header from "./features/Header";
 import { Box, createTheme, ThemeProvider } from "@mui/material";
 import { APP_BAR_HEIGHT } from "./constants.ts";
-import LoginDialogContainer from "./features/loginDialog/container/LoginDialogContainer.tsx";
-import SignupDialogContainer from "./features/signupDialog/container/SignupDialogContainer.tsx";
+import LoginDialog from "./features/LoginDialog.tsx";
+import SignupDialog from "./features/SignupDialog.tsx";
+import { UserProvider } from "./context/user.tsx";
+import { NotesProvider } from "./context/notes.tsx";
+import { Outlet, Route, Routes } from "react-router-dom";
 
 const darkTheme = createTheme({
   palette: {
@@ -18,26 +19,39 @@ const darkTheme = createTheme({
 function App() {
   return (
     <>
-      <CssBaseline />
-      <ThemeProvider theme={darkTheme}>
-        <Provider store={store}>
-          <HeaderContainer />
-          <Box
-            sx={{
-              width: "100%",
-              height: `calc(100vh - ${APP_BAR_HEIGHT}px)`,
-              position: "relative",
-            }}
-          >
-            {/*<Mirror />*/}
-            <StickyNotesContainer />
-          </Box>
-          <LoginDialogContainer />
-          <SignupDialogContainer />
-        </Provider>
-      </ThemeProvider>
+      <UserProvider>
+        <NotesProvider>
+          <CssBaseline />
+          <ThemeProvider theme={darkTheme}>
+            <Header />
+            <Routes>
+              <Route path={"/"} element={<CommonLayout />}>
+                <Route path={"/login"} element={<LoginDialog />} />
+                <Route path={"/signup"} element={<SignupDialog />} />
+              </Route>
+            </Routes>
+          </ThemeProvider>
+        </NotesProvider>
+      </UserProvider>
     </>
   );
 }
 
 export default App;
+
+function CommonLayout() {
+  return (
+    <Box
+      sx={{
+        background: "black",
+        width: "100%",
+        height: `calc(100vh - ${APP_BAR_HEIGHT}px)`,
+        position: "relative",
+      }}
+    >
+      <Mirror />
+      <StickyNotesBoard />
+      <Outlet />
+    </Box>
+  );
+}

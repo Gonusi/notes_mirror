@@ -7,17 +7,20 @@ import {
   TextField,
 } from "@mui/material";
 import Button from "@mui/material/Button";
+import { useUser } from "../context/user.tsx";
+import { useNavigate } from "react-router-dom";
 
-type Props = {
-  handleClose: () => void;
-  handleSignup: (email: string, password: string) => void;
-  isOpen: boolean;
-};
+function LoginDialog() {
+  const { login } = useUser();
+  const navigate = useNavigate();
 
-function SignupDialog({ handleClose, handleSignup, isOpen }: Props) {
+  const handleClose = () => {
+    navigate("/");
+  };
+
   return (
     <Dialog
-      open={isOpen}
+      open={true}
       onClose={handleClose}
       PaperProps={{
         component: "form",
@@ -27,27 +30,16 @@ function SignupDialog({ handleClose, handleSignup, isOpen }: Props) {
           const formJson = Object.fromEntries((formData as any).entries());
           const email = formJson.email;
           const password = formJson.password;
-          handleSignup(email, password);
+          login(email, password);
           handleClose();
         },
       }}
     >
-      <DialogTitle>Signup</DialogTitle>
+      <DialogTitle>Login</DialogTitle>
       <DialogContent>
         <DialogContentText>
-          <p>
-            You don't need to signup to use the app. Your data will still be
-            saved, but only on your local browser. This has the benefit of the
-            data not being sent to any server, however you will not be able to
-            sync the data between devices this way. Once logged in, your notes
-            will be saved to the server and you will be able to see them on any
-            device after logging in.{" "}
-          </p>
-          <p>
-            Please understand that this is a one man operation, so don't expect
-            enterprise level security - don't put extremely sensitive
-            information into the notes, like your passwords etc.
-          </p>
+          Enter your email. You'll receive a link which will log you in
+          automatically. No password needed.
         </DialogContentText>
         <TextField
           autoFocus
@@ -78,4 +70,4 @@ function SignupDialog({ handleClose, handleSignup, isOpen }: Props) {
   );
 }
 
-export default SignupDialog;
+export default LoginDialog;

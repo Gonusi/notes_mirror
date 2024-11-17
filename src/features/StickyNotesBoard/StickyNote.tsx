@@ -1,25 +1,19 @@
 /** @jsxImportSource @emotion/react */
 import React, { useState, useEffect, useRef } from "react";
-import { Note } from "../../../types";
 import Draggable, { DraggableEventHandler } from "react-draggable";
 import { Box } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import Typography from "@mui/material/Typography";
+import { useNotes, Note } from "../../context/notes.tsx";
 
 type Props = {
   note: Note;
-  onUpdateNote: (noteIndex: number, note: Note) => void;
-  onDeleteNote: (noteIndex: number) => void;
-  noteIndex: number;
 };
 
-const StickyNote: React.FC<Props> = ({
-  note,
-  onUpdateNote,
-  noteIndex,
-  onDeleteNote,
-}) => {
+const StickyNote: React.FC<Props> = ({ note }) => {
+  const { updateNote, deleteNote } = useNotes();
+
   const [text, setText] = useState(note.text || "");
   const [, setIsHovered] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
@@ -33,7 +27,7 @@ const StickyNote: React.FC<Props> = ({
   }, [note.text]);
 
   const handleBlur = () => {
-    onUpdateNote(noteIndex, { ...note, text });
+    updateNote({ ...note, text });
     setIsFocused(false);
   };
 
@@ -55,7 +49,7 @@ const StickyNote: React.FC<Props> = ({
   // };
 
   const handleDragStop: DraggableEventHandler = (_, data) => {
-    onUpdateNote(noteIndex, {
+    updateNote({
       ...note,
       x: data.x,
       y: data.y,
@@ -72,7 +66,7 @@ const StickyNote: React.FC<Props> = ({
     });
 
     if (textareaWidth != note.width || textareaHeight != note.height) {
-      onUpdateNote(noteIndex, {
+      updateNote({
         ...note,
         width: textareaWidth,
         height: textareaHeight,
@@ -130,7 +124,7 @@ const StickyNote: React.FC<Props> = ({
           </Typography>
           <IconButton
             tabIndex={1}
-            onClick={() => onDeleteNote(noteIndex)}
+            onClick={() => deleteNote(note.id)}
             size="small"
           >
             <CloseIcon htmlColor="black" fontSize="small" />
