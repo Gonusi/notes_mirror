@@ -92,10 +92,12 @@ export function NotesProvider(props: Props) {
     });
   }, []);
 
-  const deleteNote = useCallback(($id: string) => {
+  const deleteNote = useCallback(async ($id: string) => {
     if (!current) return;
 
-    setNotes((prevNotes) => prevNotes.filter((note) => note.$id != $id));
+    setNotes((prevNotes) => prevNotes.filter((note) => note.$id != $id)); // TODO Note this is now optimistic, I could move it below to make it not, consider
+    await databases.deleteDocument(IDEAS_DATABASE_ID, IDEAS_COLLECTION_ID, $id);
+    await init();
   }, []);
 
   async function init() {
@@ -104,7 +106,7 @@ export function NotesProvider(props: Props) {
       IDEAS_COLLECTION_ID,
       [Query.orderDesc("$createdAt"), Query.limit(10)],
     );
-    setNotes(response.documents as unknown as Notes); // TODO is there a better way to type the incoming Document? Is it a generic type?
+    setNotes(response.documents as unknown as Notes);
   }
 
   useEffect(() => {
@@ -115,8 +117,6 @@ export function NotesProvider(props: Props) {
 
     init();
   }, [current?.$id]);
-
-  // TODO useEffect and on notes state change sync it to DB? But I'll need to ensure init does not do that, possibly storing a flat
 
   return (
     <NotesContext.Provider
