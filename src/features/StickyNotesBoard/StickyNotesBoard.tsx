@@ -1,9 +1,13 @@
 import StickyNote from "./StickyNote.tsx";
 import { NOTE_DEFAULTS } from "./constants";
 import { useNotes } from "../../context/notes.tsx";
+import { useUser } from "../../context/user.tsx";
 
 function StickyNotesBoard() {
   const { notes, createNote } = useNotes();
+  const { current } = useUser();
+
+  console.log("notes", notes);
 
   return (
     <div
@@ -18,18 +22,23 @@ function StickyNotesBoard() {
       onDoubleClick={(e) => {
         if (e.target !== e.currentTarget) return;
 
+        if (!current) return;
+
         createNote({
-          text: "",
+          body: "",
+          title: "",
           x: e.clientX,
           y: e.clientY,
-          id: `temp-${new Date().getTime().toString()}`,
+          $id: `temp-${new Date().getTime().toString()}`,
           width: NOTE_DEFAULTS.width,
           height: NOTE_DEFAULTS.height,
+          $createdAt: "",
+          userId: current?.$id,
         });
       }}
     >
-      {Object.keys(notes).map((id) => (
-        <StickyNote note={notes[id]} key={id} />
+      {notes.map((note) => (
+        <StickyNote note={note} />
       ))}
     </div>
   );

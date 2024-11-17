@@ -14,7 +14,7 @@ type Props = {
 const StickyNote: React.FC<Props> = ({ note }) => {
   const { updateNote, deleteNote } = useNotes();
 
-  const [text, setText] = useState(note.text || "");
+  const [body, setBody] = useState(note.body || "");
   const [, setIsHovered] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
   useState(false);
@@ -23,11 +23,11 @@ const StickyNote: React.FC<Props> = ({ note }) => {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
-    setText(note.text);
-  }, [note.text]);
+    setBody(note.body);
+  }, [note.body]);
 
   const handleBlur = () => {
-    updateNote({ ...note, text });
+    updateNote({ ...note, body });
     setIsFocused(false);
   };
 
@@ -78,7 +78,7 @@ const StickyNote: React.FC<Props> = ({ note }) => {
     <Draggable
       defaultPosition={{ x: note.x, y: note.y }}
       onStop={handleDragStop}
-      handle={`.dragHandle-${note.id}`}
+      handle={`.dragHandle-${note.$id}`}
       nodeRef={noteRef}
     >
       <Box
@@ -117,14 +117,14 @@ const StickyNote: React.FC<Props> = ({ note }) => {
             justifyContent: "space-between",
             alignItems: "center",
           }}
-          className={`dragHandle-${note.id}`}
+          className={`dragHandle-${note.$id}`}
         >
           <Typography fontSize={14} fontWeight={600}>
-            {new Date(note.id).toLocaleDateString(navigator.language)}
+            {new Date(note.$createdAt).toLocaleDateString(navigator.language)}
           </Typography>
           <IconButton
             tabIndex={1}
-            onClick={() => deleteNote(note.id)}
+            onClick={() => deleteNote(note.$id)}
             size="small"
           >
             <CloseIcon htmlColor="black" fontSize="small" />
@@ -134,8 +134,8 @@ const StickyNote: React.FC<Props> = ({ note }) => {
         <textarea
           ref={textareaRef}
           onMouseUp={handleTextAreaMouseUp}
-          value={text}
-          onChange={(e) => setText(e.target.value)}
+          value={body}
+          onChange={(e) => setBody(e.target.value)}
           onBlur={handleBlur}
           tabIndex={0}
           style={{
