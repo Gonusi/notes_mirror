@@ -5,10 +5,11 @@ import {
   DialogContentText,
   DialogTitle,
   TextField,
+  Link,
 } from "@mui/material";
 import Button from "@mui/material/Button";
 import { useUser } from "../context/user.tsx";
-import { useNavigate } from "react-router-dom";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 
 function LoginDialog() {
   const { login } = useUser();
@@ -62,9 +63,21 @@ function LoginDialog() {
           variant="standard"
         />
       </DialogContent>
-      <DialogActions>
-        <Button onClick={handleClose}>Cancel</Button>
-        <Button type="submit">Subscribe</Button>
+      <DialogActions sx={{ p: 3, pt: 1 }}>
+        <Link
+          fontSize={"small"}
+          sx={{ marginRight: "auto", ml: 1 }}
+          component={RouterLink}
+          to={"/signup"}
+        >
+          Not a user? Click here to Sign Up!
+        </Link>
+        <Button variant="outlined" onClick={handleClose}>
+          Cancel
+        </Button>
+        <Button variant="contained" type="submit">
+          Subscribe
+        </Button>
       </DialogActions>
     </Dialog>
   );

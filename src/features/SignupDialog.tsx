@@ -38,19 +38,11 @@ function SignupDialog() {
       <DialogTitle>Signup</DialogTitle>
       <DialogContent>
         <DialogContentText>
-          You don't need to signup to use the app. Your data will still be
-          saved, but only on your local browser. This has the benefit of the
-          data not being sent to any server, however you will not be able to
-          sync the data between devices this way. Once logged in, your notes
-          will be saved to the server and you will be able to see them on any
-          device after logging in.{" "}
+          Signup is very simple and uses just your email address and password
+          combination. We will not use your email for anything but updates about
+          this app.
         </DialogContentText>
 
-        <DialogContentText>
-          Please understand that this is a one man operation, so don't expect
-          enterprise level security - don't put extremely sensitive information
-          into the notes, like your passwords etc.
-        </DialogContentText>
         <TextField
           autoFocus
           required
@@ -72,9 +64,13 @@ function SignupDialog() {
           variant="standard"
         />
       </DialogContent>
-      <DialogActions>
-        <Button onClick={handleClose}>Cancel</Button>
-        <Button type="submit">Subscribe</Button>
+      <DialogActions sx={{ p: 3, pt: 1 }}>
+        <Button variant="outlined" onClick={handleClose}>
+          Cancel
+        </Button>
+        <Button variant="contained" type="submit">
+          Subscribe
+        </Button>
       </DialogActions>
     </Dialog>
   );

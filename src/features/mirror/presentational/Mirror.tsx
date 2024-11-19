@@ -66,6 +66,22 @@ function Mirror() {
     });
   };
 
+  useEffect(() => {
+    handleStartMirrorClick();
+
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === "visible") {
+        handleStartMirrorClick();
+      }
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
+    return () => {
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
+  }, []);
+
   return (
     <div style={{ width: "100%", height: "100%", background: "grey" }}>
       {/*<button onClick={handleStartMirrorClick}>Start</button>*/}

@@ -6,7 +6,7 @@ import {
   useState,
 } from "react";
 import { databases } from "../appwrite.ts";
-import { ID, Query } from "appwrite";
+import { ID, Permission, Query, Role } from "appwrite";
 import { useUser } from "./user.tsx";
 
 type Props = {
@@ -34,8 +34,8 @@ type NotesContextType = {
   deleteNote: ($id: string) => void;
 };
 
-export const IDEAS_DATABASE_ID = "main";
-export const IDEAS_COLLECTION_ID = "notes";
+export const DB_ID = "main";
+export const COLLECTION_ID = "notes";
 
 const NotesContext = createContext<NotesContextType | undefined>(undefined);
 
@@ -53,59 +53,81 @@ export function NotesProvider(props: Props) {
 
   const [notes, setNotes] = useState<Notes>([]);
 
-  const createNote = useCallback(async (newNote: Note) => {
-    if (!current) return;
+  const createNote = useCallback(
+    async (newNote: Note) => {
+      if (!current) return;
 
-    // Optimistic, need to handle failure of creation, possibly saying that there are unsaved changes (because we'll have `temp-` in $id field for some notes then
-    const { $id, ...newNoteWithoutId } = newNote;
-    setNotes((prevNotes) => [...prevNotes, newNote]);
+      // Optimistic, need to handle failure of creation, possibly saying that there are unsaved changes (because we'll have `temp-` in $id field for some notes then
+      const { $id, ...newNoteWithoutId } = newNote;
+      setNotes((prevNotes) => [...prevNotes, newNote]);
 
-    const response = await databases.createDocument(
-      IDEAS_DATABASE_ID,
-      IDEAS_COLLECTION_ID,
-      ID.unique(),
-      newNoteWithoutId,
-    );
-
-    setNotes((prevNotes) => {
-      const newNotes = [...prevNotes];
-      const updatedNoteIndex = newNotes.findIndex((note) => note.$id === $id);
-      newNotes[updatedNoteIndex] = {
-        ...newNotes[updatedNoteIndex],
-        $id: response.$id,
-      };
-      return newNotes;
-    });
-  }, []);
-
-  const updateNote = useCallback((updatedNote: Note) => {
-    if (!current) return;
-
-    setNotes((prevNotes) => {
-      const newNotes = [...prevNotes];
-      const noteIndex = newNotes.findIndex(
-        (note) => note.$id === updatedNote.$id,
+      const response = await databases.createDocument(
+        DB_ID,
+        COLLECTION_ID,
+        ID.unique(),
+        newNoteWithoutId,
+        [
+          Permission.write(Role.user(current.$id)),
+          Permission.read(Role.user(current.$id)),
+        ],
       );
 
-      newNotes[noteIndex] = updatedNote;
-      return newNotes;
-    });
-  }, []);
+      setNotes((prevNotes) => {
+        const newNotes = [...prevNotes];
+        const updatedNoteIndex = newNotes.findIndex((note) => note.$id === $id);
+        newNotes[updatedNoteIndex] = {
+          ...newNotes[updatedNoteIndex],
+          $id: response.$id,
+        };
+        return newNotes;
+      });
+    },
+    [current],
+  );
 
-  const deleteNote = useCallback(async ($id: string) => {
-    if (!current) return;
+  const updateNote = useCallback(
+    async (updatedNote: Note) => {
+      if (!current) return;
 
-    setNotes((prevNotes) => prevNotes.filter((note) => note.$id != $id)); // TODO Note this is now optimistic, I could move it below to make it not, consider
-    await databases.deleteDocument(IDEAS_DATABASE_ID, IDEAS_COLLECTION_ID, $id);
-    await init();
-  }, []);
+      setNotes((prevNotes) => {
+        const newNotes = [...prevNotes];
+        const noteIndex = newNotes.findIndex(
+          (note) => note.$id === updatedNote.$id,
+        );
+
+        newNotes[noteIndex] = updatedNote;
+        return newNotes;
+      });
+
+      const submittableNote = Object.fromEntries(
+        Object.entries(updatedNote).filter(([key]) => !key.startsWith("$")),
+      );
+      await databases.updateDocument(
+        DB_ID,
+        COLLECTION_ID,
+        updatedNote.$id,
+        submittableNote,
+      );
+    },
+    [current],
+  );
+
+  const deleteNote = useCallback(
+    async ($id: string) => {
+      if (!current) return;
+
+      setNotes((prevNotes) => prevNotes.filter((note) => note.$id != $id)); // TODO Note this is now optimistic, I could move it below to make it not, consider
+      await databases.deleteDocument(DB_ID, COLLECTION_ID, $id);
+      await init();
+    },
+    [current],
+  );
 
   async function init() {
-    const response = await databases.listDocuments(
-      IDEAS_DATABASE_ID,
-      IDEAS_COLLECTION_ID,
-      [Query.orderDesc("$createdAt"), Query.limit(10)],
-    );
+    const response = await databases.listDocuments(DB_ID, COLLECTION_ID, [
+      Query.orderDesc("$createdAt"),
+      Query.limit(10),
+    ]);
     setNotes(response.documents as unknown as Notes);
   }
 

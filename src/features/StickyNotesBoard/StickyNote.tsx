@@ -31,23 +31,6 @@ const StickyNote: React.FC<Props> = ({ note }) => {
     setIsFocused(false);
   };
 
-  // const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-  //   if (noteRef.current) {
-  //     const rect = noteRef.current.getBoundingClientRect();
-  //
-  //     const relativeX = e.clientX - rect.left;
-  //     const relativeY = e.clientY - rect.top;
-  //
-  //     const isAtRightBottomCorner =
-  //       relativeX >= note.width - 30 &&
-  //       relativeX <= note.width &&
-  //       relativeY >= note.height - 30 &&
-  //       relativeY <= note.height;
-  //
-  //     setIsMouseOverTextareaResizeHandle(isAtRightBottomCorner);
-  //   }
-  // };
-
   const handleDragStop: DraggableEventHandler = (_, data) => {
     updateNote({
       ...note,
@@ -60,17 +43,18 @@ const StickyNote: React.FC<Props> = ({ note }) => {
     const textareaWidth = e.currentTarget.offsetWidth;
     const textareaHeight = e.currentTarget.offsetHeight;
 
-    console.log("Textarea dimensions:", {
-      width: textareaWidth,
-      height: textareaHeight,
-    });
-
     if (textareaWidth != note.width || textareaHeight != note.height) {
       updateNote({
         ...note,
         width: textareaWidth,
         height: textareaHeight,
       });
+    }
+  };
+
+  const handleDelete = (note: Note) => {
+    if (window.confirm("Are you sure you want to delete this note?")) {
+      deleteNote(note.$id);
     }
   };
 
@@ -124,7 +108,7 @@ const StickyNote: React.FC<Props> = ({ note }) => {
           </Typography>
           <IconButton
             tabIndex={1}
-            onClick={() => deleteNote(note.$id)}
+            onClick={() => handleDelete(note)}
             size="small"
           >
             <CloseIcon htmlColor="black" fontSize="small" />
