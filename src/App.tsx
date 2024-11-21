@@ -1,4 +1,4 @@
-import Mirror from "./features/mirror/presentational/Mirror";
+import Mirror from "./features/Mirror";
 import StickyNotesBoard from "./features/StickyNotesBoard";
 import CssBaseline from "@mui/material/CssBaseline";
 import Header from "./features/Header";
@@ -9,6 +9,7 @@ import SignupDialog from "./features/SignupDialog.tsx";
 import { UserProvider } from "./context/user.tsx";
 import { NotesProvider } from "./context/notes.tsx";
 import { Outlet, Route, Routes } from "react-router-dom";
+import ToastProvider from "./features/Toast/ToastProvider.tsx";
 
 const darkTheme = createTheme({
   palette: {
@@ -19,6 +20,7 @@ const darkTheme = createTheme({
 function App() {
   return (
     <>
+      <ToastProvider />
       <UserProvider>
         <NotesProvider>
           <CssBaseline />

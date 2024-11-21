@@ -1,4 +1,5 @@
 import {
+  Alert,
   Dialog,
   DialogActions,
   DialogContent,
@@ -9,6 +10,7 @@ import {
 import Button from "@mui/material/Button";
 import { useUser } from "../context/user.tsx";
 import { useNavigate } from "react-router-dom";
+import CheckIcon from "@mui/icons-material/Check";
 
 function SignupDialog() {
   const { register } = useUser();

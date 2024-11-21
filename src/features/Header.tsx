@@ -6,6 +6,7 @@ import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useUser } from "../context/user.tsx";
 import { Link } from "react-router-dom";
+import { grey } from "@mui/material/colors";
 
 function Header() {
   const { current, logout } = useUser();
@@ -13,7 +14,14 @@ function Header() {
   return (
     <AppBar
       position="static"
-      sx={{ position: "sticky", top: 0, left: 0, zIndex: 1000 }}
+      sx={{
+        position: "sticky",
+        top: 0,
+        left: 0,
+        zIndex: 1000,
+        backgroundColor: "transparent",
+        color: grey["800"],
+      }}
     >
       <Toolbar variant={"dense"}>
         <IconButton
@@ -26,7 +34,11 @@ function Header() {
           <MenuIcon />
         </IconButton>
 
-        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+        <Typography
+          variant="h6"
+          component="div"
+          sx={{ flexGrow: 1, fontWeight: "bold", fontStyle: "italic" }}
+        >
           Notes & Mirror {current?.email && `| ${current.email}`}
         </Typography>
 

@@ -1,6 +1,7 @@
 import { ID, Models } from "appwrite";
 import { createContext, useContext, useEffect, useState } from "react";
 import { account } from "../appwrite";
+import Toast from "../features/Toast/Toast.tsx";
 
 type Props = {
   children: React.ReactNode;
@@ -35,16 +36,21 @@ export function UserProvider(props: Props) {
     await account.createEmailPasswordSession(email, password);
     const loggedIn = await account.get();
     setUser(loggedIn);
+    Toast.success("Logged in successfully");
   }
 
   async function logout() {
     await account.deleteSession("current");
     setUser(null);
+    Toast.success("Logged out successfully");
   }
 
   async function register(email: string, password: string) {
-    await account.create(ID.unique(), email, password);
+    const registerResult = await account.create(ID.unique(), email, password);
     await login(email, password);
+
+    console.log("registerResult", registerResult);
+    Toast.success("Signed up successfully");
   }
 
   async function init() {

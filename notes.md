@@ -2,6 +2,7 @@
 
 ## TODOs for an MVP:
 - Add error handling for signup / login - currently nothing happens in case of failure.
+- Add email verification and 
 - Add flow for first time visitor - create a popup with a FAQ video of 30 seconds. 
 - Add ability to create notes despite not being logged in. Then, if user logs in, sync those. 
 - Add some kind of basic sync / merge mechanism cause now we can simultaneously edit on many devices (probably will just keep the newer note)
