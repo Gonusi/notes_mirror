@@ -4,7 +4,6 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import { useUser } from "../context/user.tsx";
 import { Link } from "react-router-dom";
-import { grey } from "@mui/material/colors";
 
 function Header() {
   const { current, logout } = useUser();
@@ -17,8 +16,6 @@ function Header() {
         top: 0,
         left: 0,
         zIndex: 1000,
-        backgroundColor: `rgba(0, 0, 0, 0.1)`,
-        color: grey["800"],
       }}
     >
       <Toolbar variant={"dense"}>
@@ -35,7 +32,7 @@ function Header() {
         <Typography
           variant="h6"
           component="div"
-          sx={{ flexGrow: 1, fontStyle: "italic" }}
+          sx={{ flexGrow: 1, fontSize: 18 }}
         >
           Notes & Mirror {current?.email && `| ${current.email}`}
         </Typography>
