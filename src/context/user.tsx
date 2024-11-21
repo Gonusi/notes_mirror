@@ -33,7 +33,11 @@ export function UserProvider(props: Props) {
   );
 
   async function login(email: string, password: string) {
-    await account.createEmailPasswordSession(email, password);
+    try {
+      await account.createEmailPasswordSession(email, password);
+    } catch (e) {
+      handleUnknownError(e);
+    }
     const loggedIn = await account.get();
     setUser(loggedIn);
     Toast.success("Logged in successfully");
@@ -42,14 +46,16 @@ export function UserProvider(props: Props) {
   async function logout() {
     await account.deleteSession("current");
     setUser(null);
-    Toast.success("Logged out successfully");
   }
 
   async function register(email: string, password: string) {
-    const registerResult = await account.create(ID.unique(), email, password);
-    await login(email, password);
+    try {
+      await account.create(ID.unique(), email, password);
+      await login(email, password);
+    } catch (e: unknown) {
+      handleUnknownError(e);
+    }
 
-    console.log("registerResult", registerResult);
     Toast.success("Signed up successfully");
   }
 
@@ -72,3 +78,11 @@ export function UserProvider(props: Props) {
     </UserContext.Provider>
   );
 }
+
+const handleUnknownError = (e: unknown) => {
+  if (e instanceof Error) {
+    Toast.error(e.message);
+  } else {
+    Toast.error("An unexpected error occurred");
+  }
+};
