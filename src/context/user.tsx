@@ -10,9 +10,11 @@ type Props = {
 type UserContextType =
   | {
       current: Models.User<Models.Preferences> | null; // TODO this seems fishy, check real returned object?
-      login: (email: string, password: string) => void;
+      loginWithPassword: (email: string, password: string) => void;
+      loginWithSecret: (email: string, secret: string) => void;
       logout: () => void;
-      register: (email: string, password: string) => void;
+      registerWithPassword: (email: string, password: string) => void;
+      registerWithMagicURL: (email: string) => void;
     }
   | undefined;
 
@@ -32,7 +34,7 @@ export function UserProvider(props: Props) {
     null,
   );
 
-  async function login(email: string, password: string) {
+  async function loginWithPassword(email: string, password: string) {
     try {
       await account.createEmailPasswordSession(email, password);
     } catch (e) {
@@ -40,7 +42,19 @@ export function UserProvider(props: Props) {
     }
     const loggedIn = await account.get();
     setUser(loggedIn);
-    Toast.success("Logged in successfully");
+    Toast.success("You are now logged in");
+  }
+
+  async function loginWithSecret(userId: string, secret: string) {
+    try {
+      await account.createSession(userId, secret);
+    } catch (e) {
+      handleUnknownError(e);
+    }
+    const loggedIn = await account.get();
+    setUser(loggedIn);
+    Toast.success("You are now logged in");
+    return true;
   }
 
   async function logout() {
@@ -48,15 +62,29 @@ export function UserProvider(props: Props) {
     setUser(null);
   }
 
-  async function register(email: string, password: string) {
+  async function registerWithPassword(email: string, password: string) {
     try {
       await account.create(ID.unique(), email, password);
-      await login(email, password);
+      await loginWithPassword(email, password);
     } catch (e: unknown) {
       handleUnknownError(e);
     }
 
-    Toast.success("Signed up successfully");
+    Toast.success("You are now logged in");
+  }
+
+  async function registerWithMagicURL(email: string) {
+    const verifyURL = window.location.href.includes("localhost")
+      ? "http://localhost:5173/verify"
+      : "https://notesmirror.com/verify";
+    try {
+      await account.createMagicURLToken(ID.unique(), email, verifyURL);
+      Toast.success(
+        `Signed up successfully. Please check your email ${email} for the login link.`,
+      );
+    } catch (e: unknown) {
+      handleUnknownError(e);
+    }
   }
 
   async function init() {
@@ -73,7 +101,16 @@ export function UserProvider(props: Props) {
   }, []);
 
   return (
-    <UserContext.Provider value={{ current: user, login, logout, register }}>
+    <UserContext.Provider
+      value={{
+        current: user,
+        loginWithPassword,
+        loginWithSecret,
+        logout,
+        registerWithPassword,
+        registerWithMagicURL,
+      }}
+    >
       {props.children}
     </UserContext.Provider>
   );

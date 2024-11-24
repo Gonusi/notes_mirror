@@ -5,14 +5,13 @@ import {
   DialogContentText,
   DialogTitle,
   TextField,
-  Link,
 } from "@mui/material";
 import Button from "@mui/material/Button";
 import { useUser } from "../context/user.tsx";
-import { Link as RouterLink, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-function LoginDialog() {
-  const { login } = useUser();
+function SignupDialogMagicURL() {
+  const { registerWithMagicURL } = useUser();
   const navigate = useNavigate();
 
   const handleClose = () => {
@@ -30,18 +29,18 @@ function LoginDialog() {
           const formData = new FormData(event.currentTarget);
           const formJson = Object.fromEntries((formData as any).entries());
           const email = formJson.email;
-          const password = formJson.password;
-          login(email, password);
+          registerWithMagicURL(email);
           handleClose();
         },
       }}
     >
-      <DialogTitle>Login</DialogTitle>
+      <DialogTitle>Signup</DialogTitle>
       <DialogContent>
         <DialogContentText>
-          Enter your email. You'll receive a link which will log you in
-          automatically. No password needed.
+          Enter your email and we'll send you a login link. If you wish, you can
+          later create a password too.
         </DialogContentText>
+
         <TextField
           autoFocus
           required
@@ -52,26 +51,8 @@ function LoginDialog() {
           fullWidth
           variant="standard"
         />
-
-        <TextField
-          required
-          margin="dense"
-          name="password"
-          label="Password"
-          type="password"
-          fullWidth
-          variant="standard"
-        />
       </DialogContent>
       <DialogActions sx={{ p: 3, pt: 1 }}>
-        <Link
-          fontSize={"small"}
-          sx={{ marginRight: "auto", ml: 1 }}
-          component={RouterLink}
-          to={"/signup"}
-        >
-          Not a user? Click here to Sign Up!
-        </Link>
         <Button variant="outlined" onClick={handleClose}>
           Cancel
         </Button>
@@ -83,4 +64,4 @@ function LoginDialog() {
   );
 }
 
-export default LoginDialog;
+export default SignupDialogMagicURL;

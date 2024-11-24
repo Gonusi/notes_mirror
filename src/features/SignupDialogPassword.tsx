@@ -10,7 +10,7 @@ import Button from "@mui/material/Button";
 import { useUser } from "../context/user.tsx";
 import { useNavigate } from "react-router-dom";
 
-function SignupDialog() {
+function SignupDialogPassword() {
   const { register } = useUser();
   const navigate = useNavigate();
 
@@ -76,4 +76,4 @@ function SignupDialog() {
   );
 }
 
-export default SignupDialog;
+export default SignupDialogPassword;
