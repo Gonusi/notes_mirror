@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef } from "react";
 import { useUser } from "../context/user.tsx";
 import Toast from "./Toast/Toast.tsx";
 import { useNavigate } from "react-router-dom";
@@ -10,7 +10,7 @@ function Verify() {
 
   const { current, loginWithSecret } = useUser();
   const navigate = useNavigate();
-  const [isLoginCalled, setIsLoginCalled] = useState(false);
+  const isLoginCalled = useRef(false);
 
   useEffect(() => {
     if (!userId || !secret) {
@@ -20,12 +20,12 @@ function Verify() {
       return;
     }
 
-    if (!current && !isLoginCalled) {
-      setIsLoginCalled(true);
+    if (!current && !isLoginCalled.current) {
+      isLoginCalled.current = true;
       loginWithSecret(userId, secret);
       navigate("/");
     }
-  }, [secret, userId]);
+  }, [secret, userId, isLoginCalled]);
 
   // Not sure if I wish to show something here yet, if not, consider moving to a hook or similar
   return null;

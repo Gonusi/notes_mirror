@@ -107,8 +107,8 @@ export function UserProvider(props: Props) {
         loginWithPassword,
         loginWithSecret,
         logout,
-        registerWithPassword,
         registerWithMagicURL,
+        registerWithPassword,
       }}
     >
       {props.children}

@@ -50,6 +50,7 @@ function StickyNotesBoard() {
         <StickyNote key={note.$id} note={note} />
       ))}
       <IconButton
+        onClick={() => handleCreateNote()}
         aria-label="create note"
         sx={{
           width: 56,
@@ -65,11 +66,7 @@ function StickyNotesBoard() {
           right: 50,
         }}
       >
-        <Add
-          htmlColor={"black"}
-          fontSize={"large"}
-          onClick={() => handleCreateNote()}
-        />
+        <Add htmlColor={"black"} fontSize={"large"} />
       </IconButton>
     </div>
   );
