@@ -11,7 +11,7 @@ import { useUser } from "../context/user.tsx";
 import { useNavigate } from "react-router-dom";
 
 function SignupDialogPassword() {
-  const { register } = useUser();
+  const { registerWithPassword } = useUser();
   const navigate = useNavigate();
 
   const handleClose = () => {
@@ -30,7 +30,7 @@ function SignupDialogPassword() {
           const formJson = Object.fromEntries((formData as any).entries());
           const email = formJson.email;
           const password = formJson.password;
-          register(email, password);
+          registerWithPassword(email, password);
           handleClose();
         },
       }}
