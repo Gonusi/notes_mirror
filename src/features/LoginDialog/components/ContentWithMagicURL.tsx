@@ -16,7 +16,7 @@ type Props = {
 
 function ContentWithMagicURL({ handleClose }: Props) {
   // Register and login use the same action in this case
-  const { registerWithMagicURL } = useUser();
+  const { registerWithMagicURL } = useUser(); // TODO I think we could avoid register and use login syntax (now we have loginWithSecret but it requires userId as arg?)
 
   return (
     <form

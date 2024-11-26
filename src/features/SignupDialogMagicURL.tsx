@@ -11,7 +11,7 @@ import { useUser } from "../context/user.tsx";
 import { useNavigate } from "react-router-dom";
 
 function SignupDialogMagicURL() {
-  const { registerWithMagicURL } = useUser();
+  const { registerWithMagicURLWithCaptcha } = useUser();
   const navigate = useNavigate();
 
   const handleClose = () => {
@@ -29,7 +29,7 @@ function SignupDialogMagicURL() {
           const formData = new FormData(event.currentTarget);
           const formJson = Object.fromEntries((formData as any).entries());
           const email = formJson.email;
-          registerWithMagicURL(email);
+          registerWithMagicURLWithCaptcha(email);
           handleClose();
         },
       }}

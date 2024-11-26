@@ -15,6 +15,7 @@ type UserContextType =
       logout: () => void;
       registerWithPassword: (email: string, password: string) => void;
       registerWithMagicURL: (email: string) => void;
+      registerWithMagicURLWithCaptcha: (email: string) => void;
     }
   | undefined;
 
@@ -87,6 +88,32 @@ export function UserProvider(props: Props) {
     }
   }
 
+  async function registerWithMagicURLWithCaptcha(email: string) {
+    const registerURL = window.location.href.includes("localhost")
+      ? "http://localhost:3003/register"
+      : "674398db33fda069dea2.appwrite.global/register";
+
+    try {
+      const response = await fetch(registerURL, {
+        body: JSON.stringify({ email }),
+        method: "POST",
+        mode: "cors",
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`Response status: ${response.status}`);
+      }
+
+      const json = await response.json();
+      console.log("got response", json);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   async function init() {
     try {
       const loggedIn = await account.get();
@@ -109,6 +136,7 @@ export function UserProvider(props: Props) {
         logout,
         registerWithMagicURL,
         registerWithPassword,
+        registerWithMagicURLWithCaptcha,
       }}
     >
       {props.children}
